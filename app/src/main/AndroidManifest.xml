@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AnalysisActivity"></activity>
+        <activity android:name=".PinActivity"></activity>
+        <activity android:name=".ReflectionActivity"></activity>
+        <activity android:name=".ResourcesActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>
