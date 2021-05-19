@@ -3,16 +3,16 @@ package edu.wwu.csci412.das_management_tracker;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.EditText;
+import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
+
 
 public class ReflectionActivity extends AppCompatActivity {
-
+    static DatabaseManager db;
     ConstraintLayout reflectionLayout;
 
     @SuppressLint("ClickableViewAccessibility")
@@ -33,5 +33,16 @@ public class ReflectionActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    private String getDayMonthYear() {
+        Calendar c = Calendar.getInstance();
+        return c.getTime().toString();
+    }
+    public void save(View view) {
+        EditText newEntry = findViewById(R.id.anEntry);
+        String input =  newEntry.getText().toString();
+        DiaryEntry entry = new DiaryEntry(0, getDayMonthYear(),input);
+        db.insert(entry);
     }
 }

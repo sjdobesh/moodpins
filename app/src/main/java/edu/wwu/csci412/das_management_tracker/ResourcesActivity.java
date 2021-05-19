@@ -45,19 +45,22 @@ public class ResourcesActivity extends AppCompatActivity {
         update();
     }
 
+    //Need to add in actual resources
+    //Like links or past diary entries etc.
+    //Diary entries can be pulled from database
     private void update(){
         scrollView.removeAllViewsInLayout();
         //Make scrolling list of resources
         scrollView.removeAllViewsInLayout();
         GridLayout grid = new GridLayout( this );
+
         grid.setRowCount(15);
         grid.setColumnCount( 1 );
         ResourceButton [] buttons = new ResourceButton[15];
         for(int i = 0; i < 15; i++) {
-
             buttons[i] = new ResourceButton( this);
             buttons[i].setText("Resource");
-            grid.addView(buttons[i], 500, GridLayout.LayoutParams.MATCH_PARENT);
+            grid.addView(buttons[i], GridLayout.LayoutParams.MATCH_PARENT, 300);
         }
         scrollView.addView( grid );
     }

@@ -4,14 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PinActivity extends AppCompatActivity {
 
     ConstraintLayout pinLayout;
-
+    private AlertDialog.Builder popupBuilder;
+    private AlertDialog popup;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,28 @@ public class PinActivity extends AppCompatActivity {
         });
     }
 
+
+    public void settings(View view) {
+        popupBuilder = new AlertDialog.Builder(this);
+        View settingsView = getLayoutInflater().inflate(R.layout.activity_settings, null);
+        Button cancel_btn = settingsView.findViewById(R.id.cancel);
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                popup.dismiss();
+            }
+        });
+        Button confirm_btn = settingsView.findViewById(R.id.confirm);
+        confirm_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                popup.dismiss();
+            }
+        });
+
+        popupBuilder.setView(settingsView);
+        popup = popupBuilder.create();
+        popup.show();
+    }
 
 
 }

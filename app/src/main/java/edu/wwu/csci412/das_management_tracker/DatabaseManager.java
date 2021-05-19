@@ -61,7 +61,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
             ArrayList<DiaryEntry> entries = new ArrayList<>( );
             while( cursor.moveToNext( ) ) {
                 DiaryEntry currentDiary
-                        = new DiaryEntry(cursor.getString( 0 ), cursor.getString( 1 ),
+                        = new DiaryEntry(cursor.getInt( 0 ), cursor.getString( 1 ),
                         cursor.getString( 2 ));
                 entries.add(currentDiary);
             }
