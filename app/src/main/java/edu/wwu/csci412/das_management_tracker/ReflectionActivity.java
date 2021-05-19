@@ -3,23 +3,38 @@ package edu.wwu.csci412.das_management_tracker;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+
 import android.view.View;
 import android.widget.EditText;
 import java.util.Calendar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 
 
 public class ReflectionActivity extends AppCompatActivity {
     static DatabaseManager db;
     ConstraintLayout reflectionLayout;
+    Toolbar toolbar;
+    RecyclerView recyclerView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reflection);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        recyclerView = findViewById(R.id.diaryList);
 
         reflectionLayout = (ConstraintLayout) findViewById(R.id.layout_reflection);
 
@@ -35,14 +50,22 @@ public class ReflectionActivity extends AppCompatActivity {
         });
     }
 
+
     private String getDayMonthYear() {
         Calendar c = Calendar.getInstance();
         return c.getTime().toString();
     }
     public void save(View view) {
         EditText newEntry = findViewById(R.id.anEntry);
-        String input =  newEntry.getText().toString();
-        DiaryEntry entry = new DiaryEntry(0, getDayMonthYear(),input);
+        String input = newEntry.getText().toString();
+        DiaryEntry entry = new DiaryEntry(0, getDayMonthYear(), input);
         db.insert(entry);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.add_menu,menu);
+        return super.onCreateOptionsMenu(menu);
+
     }
 }
