@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".AddNote"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,11 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AnalysisActivity"></activity>
-        <activity android:name=".PinActivity"></activity>
-        <activity android:name=".ReflectionActivity"></activity>
-        <activity android:name=".ResourcesActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".AnalysisActivity" />
+        <activity android:name=".PinActivity" />
+        <activity android:name=".ReflectionActivity" />
+        <activity android:name=".ResourcesActivity" />
+        <activity android:name=".SettingsActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
