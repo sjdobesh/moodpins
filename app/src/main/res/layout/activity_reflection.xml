@@ -12,13 +12,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_horizontal">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reflection!"
-        android:textColor="@color/white"
-        />
+        android:gravity="center"
+        android:layout_margin="30dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reflection"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+
+            />
+        <EditText
+            android:id="@+id/anEntry"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write down your thoughts to save for later!"
+            android:textColorHint="@color/white"
+            android:inputType="text"/>
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_margin="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:onClick="save"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
