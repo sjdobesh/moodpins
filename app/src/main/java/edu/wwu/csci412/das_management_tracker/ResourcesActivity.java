@@ -16,7 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 public class ResourcesActivity extends AppCompatActivity {
-
+    //randomly shows resources and activities
     ConstraintLayout resourcesLayout;
     private AlertDialog.Builder popupBuilder;
     private AlertDialog popup;
