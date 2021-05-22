@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -21,41 +22,44 @@ import top.defaults.colorpicker.ColorPickerView;
 public class PinActivity extends AppCompatActivity {
 
     // vars
-    ConstraintLayout pinLayout;          // layout
-    private TextView pinTextView;        // 'drop a pin' text
-    private ColorPickerView colorPicker; // circular color picker
-    private Button confirmButton;        // confirm new data point
-    private String coords;               // last color coordinates
+    ConstraintLayout pin_layout;          // layout
+    private TextView pin_text;            // 'drop a pin' text
+    private ColorPickerView color_wheel;  // circular color picker
+    private Button confirm_button;        // confirm new data point
+    private double[] coords = {0, 0};     // last color coordinates (x, y)
+    private ImageView popup;              // emoji popup
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin);
-        pinLayout = (ConstraintLayout) findViewById(R.id.layout_pins);
+        pin_layout = (ConstraintLayout) findViewById(R.id.layout_pins);
+
+        // find xml views
+        pin_text       = findViewById(R.id.pin_heading);
+        popup          = findViewById(R.id.popup);
+        confirm_button = findViewById(R.id.confirm_button);
+        color_wheel    = findViewById(R.id.color_wheel);
 
         // debug text object
         final TextView data_debug = new TextView(this);
-        pinLayout.addView(data_debug);
-
-        // find views
-        pinTextView = findViewById(R.id.pin_heading);
-        confirmButton = findViewById(R.id.confirm_button);
-        colorPicker = findViewById(R.id.colorPicker);
+        pin_layout.addView(data_debug);
 
         // starting color is white
-        colorPicker.setInitialColor(0xffffffff);
+        color_wheel.setInitialColor(0xffffffff);
 
         // access color from wheel
-        colorPicker.subscribe(new ColorObserver() {
+        color_wheel.subscribe(new ColorObserver() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onColor(int color_subscribe, boolean fromUser, boolean shouldPropagate) {
 
                 // update buttons and text
-                pinTextView.setTextColor(color_subscribe);
-                confirmButton.setTextColor(color_subscribe);
-                confirmButton.setVisibility(View.VISIBLE);
+                pin_text.setTextColor(color_subscribe);
+                confirm_button.setTextColor(color_subscribe);
+                confirm_button.setVisibility(View.VISIBLE);
 
                 // get current date and time
                 String date = get_formatted_date();
@@ -63,30 +67,41 @@ public class PinActivity extends AppCompatActivity {
                 // update exposed coordinates
                 coords = rgb2xy(Integer.toHexString(color_subscribe));
 
+                // update and move emoji popup
+                int emoji_res = get_emotion(rgb2hs(Integer.toHexString(color_subscribe)));
+                popup.setImageResource(emoji_res);
+
+                // work out where on the screen this is using the
+                // color coords and center of color wheel
+                double x = (color_wheel.getX() + (color_wheel.getWidth()  / 2.0))
+                           - (popup.getWidth()  / 2.0);
+                double y = (color_wheel.getY() + (color_wheel.getHeight() / 2.0))
+                           - (popup.getHeight() / 2.0);
+                x += coords[0] * color_wheel.getWidth()/200.0 * 0.9;
+                y += coords[1] * color_wheel.getWidth()/200.0 * 0.9;
+                popup.setX((float)x);
+                popup.setY((float)y);
+
                 // DEBUG
-                data_debug.setText("Data Point : (" + coords +", "
-                                                    + date+")");
+                // data_debug.setText("Data Point : (" + coords[0] + "," + coords[1] + ","+ date+")");
             }
         });
 
         // add a new data point
-        confirmButton.setOnClickListener(
+        confirm_button.setOnClickListener(
             new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void onClick(final View v) {
-                    confirmButton.setVisibility(View.GONE);
-
-                    // DEBUG
-                    data_debug.setText("Adding data point.");
-
+                    confirm_button.setVisibility(View.GONE);
                     add_db_entry();
+                    color_wheel.setInitialColor(0xffffffff);
+                    confirm_button.setVisibility(View.GONE);
                 }
             });
 
-
         // swipe controls
-        pinLayout.setOnTouchListener(new OnSwipeTouchListener(PinActivity.this) {
+        pin_layout.setOnTouchListener(new OnSwipeTouchListener(PinActivity.this) {
             @Override
             public void onSwipeLeft() {
                 Intent intent = new Intent(PinActivity.this, ReflectionActivity.class);
@@ -108,17 +123,61 @@ public class PinActivity extends AppCompatActivity {
         });
     }
 
+    // figure out which emoji to use based on hue and saturation
+    public static int get_emotion(double[] hs) {
+        int resource = 0;
+        if (hs[1] < 50.0) {
+            resource = R.drawable.nothing;
+        }
+        else {
+            // get angle partition
+            hs[0] = (hs[0] > 337.5) ? hs[0] - 337.5 : hs[0] + 22.5;
+            int angle_partition = (int)hs[0] / 45;
+            switch (angle_partition) {
+                case 0:
+                    resource = R.drawable.energetic;
+                    break;
+                case 1:
+                    resource = R.drawable.happy;
+                    break;
+                case 2:
+                    resource = R.drawable.positive;
+                    break;
+                case 3:
+                    resource = R.drawable.content;
+                    break;
+                case 4:
+                    resource = R.drawable.calm;
+                    break;
+                case 5:
+                    resource = R.drawable.sad;
+                    break;
+                case 6:
+                    resource = R.drawable.negative;
+                    break;
+                case 7:
+                    resource = R.drawable.angry;
+                    break;
+            }
+        }
+        return resource;
+    }
+
     // add database entry
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void add_db_entry() {
         String date = get_formatted_date();
-        System.out.println("Adding data point: "+coords+","+date);
+        System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
         // TODO add entry to data base here
     }
 
-    // Utility function converts rgb hex to hsv to x,y coordinates
-    // NOTE rn, this returns a string, should probably be an array or something
-    public static String rgb2xy(String RGBHex) {
+    public static double[] rgb2xy(String RGBHex) {
+       double[] hs = rgb2hs(RGBHex);
+        return hs2cartesian(hs[0], hs[1]);
+    }
+
+    // Utility function converts rgb hex to hs(v)
+    public static double[] rgb2hs(String RGBHex) {
         // separate 0xXXXXXXXX -> 0xXX XX XX XX -> a r g b
         // divide by 255 to normalize values between 0 and 1
         double r,g,b;
@@ -149,15 +208,20 @@ public class PinActivity extends AppCompatActivity {
         h -= 60;
         h = h < 0 ? h+360 : h;
 
-        // convert to (x, y) coordinates
-        double y = s * Math.sin(Math.toRadians(h));
-        double x = s * Math.cos(Math.toRadians(h));
-        return x+","+y;
+        return new double[]{h, s};
     }
+
+    public static double[] hs2cartesian(double h, double s) {
+        double x =  s * Math.sin(Math.toRadians(h));
+        double y = -s * Math.cos(Math.toRadians(h));
+        return new double[]{x, y};
+    }
+
     // helper to compute hue val
     public static double compute_hue(double c1, double c2, double color_diff, double axis_deg) {
         return (60.0 * ((c1-c2)/color_diff) + axis_deg) % 360.0;
     }
+
     // get current date and time with pre specified format
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String get_formatted_date() {
