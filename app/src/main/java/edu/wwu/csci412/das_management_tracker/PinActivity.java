@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -18,15 +20,104 @@ import top.defaults.colorpicker.ColorPickerView;
 
 public class PinActivity extends AppCompatActivity {
 
-    // color picker vars
-    // text view variable to set the color for GFG text
-    private TextView pinTextView;
-    // color wheel
-    private ColorPickerView colorPicker;
+    // vars
+    ConstraintLayout pinLayout;          // layout
+    private TextView pinTextView;        // 'drop a pin' text
+    private ColorPickerView colorPicker; // circular color picker
+    private Button confirmButton;        // confirm new data point
+    private String coords;               // last color coordinates
 
-    ConstraintLayout pinLayout;
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pin);
+        pinLayout = (ConstraintLayout) findViewById(R.id.layout_pins);
+
+        // debug text object
+        final TextView data_debug = new TextView(this);
+        pinLayout.addView(data_debug);
+
+        // find views
+        pinTextView = findViewById(R.id.pin_heading);
+        confirmButton = findViewById(R.id.confirm_button);
+        colorPicker = findViewById(R.id.colorPicker);
+
+        // starting color is white
+        colorPicker.setInitialColor(0xffffffff);
+
+        // access color from wheel
+        colorPicker.subscribe(new ColorObserver() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onColor(int color_subscribe, boolean fromUser, boolean shouldPropagate) {
+
+                // update buttons and text
+                pinTextView.setTextColor(color_subscribe);
+                confirmButton.setTextColor(color_subscribe);
+                confirmButton.setVisibility(View.VISIBLE);
+
+                // get current date and time
+                String date = get_formatted_date();
+
+                // update exposed coordinates
+                coords = rgb2xy(Integer.toHexString(color_subscribe));
+
+                // DEBUG
+                data_debug.setText("Data Point : (" + coords +", "
+                                                    + date+")");
+            }
+        });
+
+        // add a new data point
+        confirmButton.setOnClickListener(
+            new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onClick(final View v) {
+                    confirmButton.setVisibility(View.GONE);
+
+                    // DEBUG
+                    data_debug.setText("Adding data point.");
+
+                    add_db_entry();
+                }
+            });
+
+
+        // swipe controls
+        pinLayout.setOnTouchListener(new OnSwipeTouchListener(PinActivity.this) {
+            @Override
+            public void onSwipeLeft() {
+                Intent intent = new Intent(PinActivity.this, ReflectionActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
+            }
+            @Override
+            public void onSwipeRight() {
+                Intent intent = new Intent(PinActivity.this, AnalysisActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_out_to_right, R.anim.slide_in_from_left);
+            }
+            @Override
+            public void onSwipeTop() {
+                Intent intent = new Intent(PinActivity.this, ResourcesActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_up);
+            }
+        });
+    }
+
+    // add database entry
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void add_db_entry() {
+        String date = get_formatted_date();
+        System.out.println("Adding data point: "+coords+","+date);
+        // TODO add entry to data base here
+    }
 
     // Utility function converts rgb hex to hsv to x,y coordinates
+    // NOTE rn, this returns a string, should probably be an array or something
     public static String rgb2xy(String RGBHex) {
         // separate 0xXXXXXXXX -> 0xXX XX XX XX -> a r g b
         // divide by 255 to normalize values between 0 and 1
@@ -63,64 +154,14 @@ public class PinActivity extends AppCompatActivity {
         double x = s * Math.cos(Math.toRadians(h));
         return x+","+y;
     }
-
+    // helper to compute hue val
     public static double compute_hue(double c1, double c2, double color_diff, double axis_deg) {
         return (60.0 * ((c1-c2)/color_diff) + axis_deg) % 360.0;
     }
-
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // create and load view layout
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pin);
-        pinLayout = (ConstraintLayout) findViewById(R.id.layout_pins);
-
-        // inspect value from color wheel
-        final TextView data_debug = new TextView(this);
-        pinLayout.addView(data_debug);
-
-        // register the text heading
-        pinTextView = findViewById(R.id.pin_heading);
-        // get color picker
-        colorPicker = findViewById(R.id.colorPicker);
-        // get the color from wheel
-        colorPicker.subscribe(new ColorObserver() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onColor(int color, boolean fromUser, boolean shouldPropagate) {
-                // use the color
-                pinTextView.setTextColor(color);
-                LocalDateTime date = LocalDateTime.now();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                data_debug.setText("Data Point : (" + rgb2xy(Integer.toHexString(color))+", "
-                                                    + dtf.format(date)+")");
-            }
-        });
-
-        // swipe controls
-        pinLayout.setOnTouchListener(new OnSwipeTouchListener(PinActivity.this) {
-            @Override
-            public void onSwipeLeft() {
-                Intent intent = new Intent(PinActivity.this, ReflectionActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-            }
-            @Override
-            public void onSwipeRight() {
-                Intent intent = new Intent(PinActivity.this, AnalysisActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_out_to_right, R.anim.slide_in_from_left);
-            }
-            @Override
-            public void onSwipeTop() {
-                Intent intent = new Intent(PinActivity.this, ResourcesActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_up);
-            }
-        });
+    // get current date and time with pre specified format
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String get_formatted_date() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        return dtf.format(LocalDateTime.now());
     }
-
-
-
 }
