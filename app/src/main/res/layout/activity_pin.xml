@@ -10,14 +10,87 @@
     tools:context=".PinActivity">
 
     <TextView
+        android:id="@+id/pin_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pins!"
-        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:text="Drop a Pin!"
+        android:textSize="60sp"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.808" />
+
+
+    <top.defaults.colorpicker.ColorPickerView
+        android:id="@+id/colorPicker"
+        android:layout_width="259dp"
+        android:layout_height="272dp"
+        android:layout_marginTop="80dp"
+        android:rotation="30"
+        android:scaleX="-1"
+        app:enableAlpha="false"
+        app:enableBrightness="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </top.defaults.colorpicker.ColorPickerView>
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:src="@drawable/calm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.548" />
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:src="@drawable/energetic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.057" />
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/positive"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.952"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.277" />
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:src="@drawable/negative"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.277" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
