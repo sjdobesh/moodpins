@@ -22,14 +22,14 @@ import top.defaults.colorpicker.ColorPickerView;
 public class PinActivity extends AppCompatActivity {
 
     private AlertDialog.Builder popupBuilder;
-    private AlertDialog popup;
+    private AlertDialog settings_popup;
     // vars
     ConstraintLayout pin_layout;          // layout
     private TextView pin_text;            // 'drop a pin' text
     private ColorPickerView color_wheel;  // circular color picker
     private Button confirm_button;        // confirm new data point
     private double[] coords = {0, 0};     // last color coordinates (x, y)
-    private ImageView popup;              // emoji popup
+    private ImageView selector;           // emoji popup
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,7 +41,7 @@ public class PinActivity extends AppCompatActivity {
 
         // find xml views
         pin_text       = findViewById(R.id.pin_heading);
-        popup          = findViewById(R.id.popup);
+        selector          = findViewById(R.id.popup);
         confirm_button = findViewById(R.id.confirm_button);
         color_wheel    = findViewById(R.id.color_wheel);
 
@@ -63,26 +63,24 @@ public class PinActivity extends AppCompatActivity {
                 confirm_button.setTextColor(color_subscribe);
                 confirm_button.setVisibility(View.VISIBLE);
 
-                // get current date and time
-                String date = get_formatted_date();
 
                 // update exposed coordinates
                 coords = rgb2xy(Integer.toHexString(color_subscribe));
 
                 // update and move emoji popup
                 int emoji_res = get_emotion(rgb2hs(Integer.toHexString(color_subscribe)));
-                popup.setImageResource(emoji_res);
+                selector.setImageResource(emoji_res);
 
                 // work out where on the screen this is using the
                 // color coords and center of color wheel
                 double x = (color_wheel.getX() + (color_wheel.getWidth()  / 2.0))
-                           - (popup.getWidth()  / 2.0);
+                           - (selector.getWidth()  / 2.0);
                 double y = (color_wheel.getY() + (color_wheel.getHeight() / 2.0))
-                           - (popup.getHeight() / 2.0);
+                           - (selector.getHeight() / 2.0);
                 x += coords[0] * color_wheel.getWidth()/200.0 * 0.9;
                 y += coords[1] * color_wheel.getWidth()/200.0 * 0.9;
-                popup.setX((float)x);
-                popup.setY((float)y);
+                selector.setX((float)x);
+                selector.setY((float)y);
 
                 // DEBUG
                 // data_debug.setText("Data Point : (" + coords[0] + "," + coords[1] + ","+ date+")");
@@ -132,19 +130,19 @@ public class PinActivity extends AppCompatActivity {
 
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                popup.dismiss();
+                settings_popup.dismiss();
             }
         });
         Button confirm_btn = settingsView.findViewById(R.id.confirm);
         confirm_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                popup.dismiss();
+                settings_popup.dismiss();
             }
         });
         
         popupBuilder.setView(settingsView);
-        popup = popupBuilder.create();
-        popup.show();
+        settings_popup = popupBuilder.create();
+        settings_popup.show();
     }
 
     // figure out which emoji to use based on hue and saturation

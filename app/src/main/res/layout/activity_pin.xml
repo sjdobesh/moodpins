@@ -7,35 +7,27 @@
     android:layout_height="match_parent"
     android:background="@color/charcoal"
     tools:context=".PinActivity">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:layout_margin="30dp">
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pins"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:textColor="@color/white" />
-        <Button
-            android:id="@+id/settings_button"
-            android:layout_weight="0"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Settings"
-            android:onClick="settings"/>
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="93dp"
+        android:layout_height="45dp"
+        android:layout_weight="0"
+        android:onClick="settings"
+        android:text="@string/settings_tag"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.931"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
 
     <TextView
         android:id="@+id/pin_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Drop a Pin!"
+        android:text="@string/pin_text"
         android:textSize="60sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,6 +38,7 @@
         app:layout_constraintVertical_bias="0.808" />
 
     <ImageView
+        android:contentDescription="@string/selector"
         android:id="@+id/popup"
         android:layout_width="43dp"
         android:layout_height="54dp"
@@ -54,7 +47,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/color_wheel"
         app:layout_constraintEnd_toEndOf="@+id/color_wheel"
         app:layout_constraintStart_toStartOf="@+id/color_wheel"
-        app:layout_constraintTop_toTopOf="@+id/color_wheel" />
+        app:layout_constraintTop_toTopOf="@+id/color_wheel"
+        tools:targetApi="lollipop" />
 
     <top.defaults.colorpicker.ColorPickerView
         android:id="@+id/color_wheel"
@@ -76,6 +70,7 @@
     </top.defaults.colorpicker.ColorPickerView>
 
     <ImageView
+        android:contentDescription="@string/south"
         android:id="@+id/imageView8"
         android:layout_width="75dp"
         android:layout_height="40dp"
@@ -90,6 +85,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
+        android:contentDescription="@string/north"
         android:id="@+id/imageView2"
         android:layout_width="75dp"
         android:layout_height="40dp"
@@ -103,6 +99,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
+        android:contentDescription="@string/east"
         android:id="@+id/imageView9"
         android:layout_width="75dp"
         android:layout_height="40dp"
@@ -118,6 +115,7 @@
         app:layout_constraintVertical_bias="0.277" />
 
     <ImageView
+        android:contentDescription="@string/west"
         android:id="@+id/imageView10"
         android:layout_width="75dp"
         android:layout_height="40dp"
@@ -138,7 +136,7 @@
         android:layout_height="52dp"
         android:layout_gravity="center"
         android:background="#88303030"
-        android:text="Confirm?"
+        android:text="@string/confirm_pin"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="40sp"
