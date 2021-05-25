@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import java.util.Calendar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -22,11 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class ReflectionActivity extends AppCompatActivity {
-    static DatabaseManager db;
+
     ConstraintLayout reflectionLayout;
     Toolbar toolbar;
     RecyclerView recyclerView;
-
+    AlertDialog.Builder popupBuilder;
+    AlertDialog popup;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +53,7 @@ public class ReflectionActivity extends AppCompatActivity {
     }
 
 
-    private String getDayMonthYear() {
-        Calendar c = Calendar.getInstance();
-        return c.getTime().toString();
-    }
-    public void save(View view) {
-        EditText newEntry = findViewById(R.id.anEntry);
-        String input = newEntry.getText().toString();
-        DiaryEntry entry = new DiaryEntry(0, getDayMonthYear(), input);
-        db.insert(entry);
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -68,4 +61,18 @@ public class ReflectionActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
 
     }
+    public void addNote(View view) {
+        //set up popup reflection (diary) button
+        popupBuilder = new AlertDialog.Builder(this);
+        View entryView = getLayoutInflater().inflate(R.layout.activity_add_entry, null);
+        popupBuilder.setView(entryView);
+        popup = popupBuilder.create();
+        popup.show();
+    }
+    /*<androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Entry"
+            android:onClick="addNote"/>*/
+
 }

@@ -43,8 +43,10 @@ public class DatabaseManager extends SQLiteOpenHelper{
             SQLiteDatabase db = this.getWritableDatabase( );
             String sqlInsert = "insert into " + TABLE_DIARY;
             sqlInsert += " values( null, ' ";
+            sqlInsert += entry.getTitle( ) + "', ' ";
+            sqlInsert += entry.getText( ) + "', ' ";
             sqlInsert += entry.getDate( ) + "', ' ";
-            sqlInsert += entry.getInput( ) + "' )";
+            sqlInsert += entry.getTime( ) + "' )";
 
             db.execSQL( sqlInsert );
             db.close( );
@@ -62,7 +64,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
             while( cursor.moveToNext( ) ) {
                 DiaryEntry currentDiary
                         = new DiaryEntry(cursor.getInt( 0 ), cursor.getString( 1 ),
-                        cursor.getString( 2 ));
+                        cursor.getString( 2 ),cursor.getString( 3 ),cursor.getString( 4 ));
                 entries.add(currentDiary);
             }
             db.close( );
