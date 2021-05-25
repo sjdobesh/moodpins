@@ -61,18 +61,15 @@ public class ReflectionActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
 
     }
-    public void addNote(View view) {
+
+    /*public void addNote(View view) {
         //set up popup reflection (diary) button
         popupBuilder = new AlertDialog.Builder(this);
         View entryView = getLayoutInflater().inflate(R.layout.activity_add_entry, null);
         popupBuilder.setView(entryView);
         popup = popupBuilder.create();
         popup.show();
-    }
-    /*<androidx.appcompat.widget.AppCompatButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Entry"
-            android:onClick="addNote"/>*/
+    }*/
+
 
 }

@@ -10,7 +10,7 @@ import android.widget.EditText;
 import java.util.Calendar;
 
 public class AddNote extends AppCompatActivity {
-    static DatabaseManager db;
+    DatabaseManager db = new DatabaseManager(this);
     Toolbar toolbar;
     EditText title;
     EditText entry;

@@ -4,8 +4,10 @@ public class Pin {
     private double x;
     private double y;
     private String date;
+    private int id;
 
-    public Pin(double x, double y, String date){
+    public Pin(int id,double x, double y, String date){
+        this.id = id;
         this.x = x;
         this.y = y;
         this.date = date;

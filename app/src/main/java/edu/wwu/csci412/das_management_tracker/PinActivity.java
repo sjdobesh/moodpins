@@ -20,7 +20,7 @@ import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
 
 public class PinActivity extends AppCompatActivity {
-
+    DatabaseManager db = new DatabaseManager(this);
     private AlertDialog.Builder popupBuilder;
     private AlertDialog settings_popup;
     // vars
@@ -190,7 +190,10 @@ public class PinActivity extends AppCompatActivity {
     public void add_db_entry() {
         String date = get_formatted_date();
         System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
+
         // TODO add entry to data base here
+        Pin pin = new Pin(0, coords[0],coords[1],date);
+        db.insert(pin);
     }
 
     public static double[] rgb2xy(String RGBHex) {
