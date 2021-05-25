@@ -6,9 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import androidx.appcompat.app.AlertDialog;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -21,6 +21,8 @@ import top.defaults.colorpicker.ColorPickerView;
 
 public class PinActivity extends AppCompatActivity {
 
+    private AlertDialog.Builder popupBuilder;
+    private AlertDialog popup;
     // vars
     ConstraintLayout pin_layout;          // layout
     private TextView pin_text;            // 'drop a pin' text
@@ -123,6 +125,28 @@ public class PinActivity extends AppCompatActivity {
         });
     }
 
+    public void settings(View view) {
+        popupBuilder = new AlertDialog.Builder(this);
+        View settingsView = getLayoutInflater().inflate(R.layout.activity_settings, null);
+        Button cancel_btn = settingsView.findViewById(R.id.cancel);
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                popup.dismiss();
+            }
+        });
+        Button confirm_btn = settingsView.findViewById(R.id.confirm);
+        confirm_btn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                popup.dismiss();
+            }
+        });
+        
+        popupBuilder.setView(settingsView);
+        popup = popupBuilder.create();
+        popup.show();
+    }
+
     // figure out which emoji to use based on hue and saturation
     public static int get_emotion(double[] hs) {
         int resource = 0;
@@ -184,6 +208,7 @@ public class PinActivity extends AppCompatActivity {
         r = (double)Integer.parseInt(RGBHex.substring(2,3), 16) / 255.0;
         g = (double)Integer.parseInt(RGBHex.substring(4,5), 16) / 255.0;
         b = (double)Integer.parseInt(RGBHex.substring(6,7), 16) / 255.0;
+
 
         // convert to hsv (we actually just need h and s for coordinates)
         double color_max = Math.max(r, Math.max(g,b));

@@ -7,6 +7,28 @@
     android:layout_height="match_parent"
     android:background="@color/charcoal"
     tools:context=".PinActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_margin="30dp">
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pins"
+            android:textSize="30sp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/white" />
+        <Button
+            android:id="@+id/settings_button"
+            android:layout_weight="0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:onClick="settings"/>
 
     <TextView
         android:id="@+id/pin_heading"

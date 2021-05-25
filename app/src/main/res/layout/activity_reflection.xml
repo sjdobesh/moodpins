@@ -8,7 +8,35 @@
     android:layout_height="match_parent"
     android:background="@color/charcoal"
     tools:context=".ReflectionActivity">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_margin="30dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reflection"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            />
+        <EditText
+            android:id="@+id/anEntry"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write down your thoughts to save for later!"
+            android:textColorHint="@color/white"
+            android:inputType="text"/>
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_margin="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:onClick="save"/>
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -28,5 +56,6 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
