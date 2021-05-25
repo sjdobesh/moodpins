@@ -64,13 +64,6 @@ public class ResourcesActivity extends AppCompatActivity {
         }
         scrollView.addView( grid );
     }
-    public void reflection(View view) {
-        //set up popup reflection (diary) button
-        popupBuilder = new AlertDialog.Builder(this);
-        View reflectionView = getLayoutInflater().inflate(R.layout.activity_reflection, null);
-        popupBuilder.setView(reflectionView);
-        popup = popupBuilder.create();
-        popup.show();
-    }
+
 
 }
