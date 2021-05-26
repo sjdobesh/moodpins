@@ -2,6 +2,7 @@ package edu.wwu.csci412.das_management_tracker;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class ReflectionActivity extends AppCompatActivity {
             @Override
             public void onSwipeRight() {
                 Intent intent = new Intent(ReflectionActivity.this, PinActivity.class);
+                intent.putExtra("colorStart", "reflection");
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_out_to_right, R.anim.slide_in_from_left);
             }

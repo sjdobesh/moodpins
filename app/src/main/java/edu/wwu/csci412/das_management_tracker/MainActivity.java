@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, PinActivity.class);
                     startActivity(intent);
 //                    SplashAnimation();
-                    overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
+                    overridePendingTransition(0, R.anim.zoom_exit);
                     finish();
                 }
             }

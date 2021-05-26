@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Graph Menu"
+        android:id="@+id/dropdown_item"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_dropmenu_foreground">
+
+        <menu>
+
+            <item
+                android:title="Frequency"
+                android:id="@+id/frequency_item"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:title="Daily"
+                android:id="@+id/daily_item"
+                app:showAsAction="never">
+            </item>
+        </menu>
+    </item>
+</menu>

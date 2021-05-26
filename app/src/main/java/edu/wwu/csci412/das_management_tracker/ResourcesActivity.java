@@ -2,6 +2,7 @@ package edu.wwu.csci412.das_management_tracker;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ public class ResourcesActivity extends AppCompatActivity {
             @Override
             public void onSwipeBottom() {
                 Intent intent = new Intent(ResourcesActivity.this, PinActivity.class);
+                intent.putExtra("colorStart", "resources");
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_out_to_bottom, R.anim.slide_in_from_up);
             }
