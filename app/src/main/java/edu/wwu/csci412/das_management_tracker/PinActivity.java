@@ -20,18 +20,21 @@ import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
 
 public class PinActivity extends AppCompatActivity {
-    DatabaseManager db = new DatabaseManager(this);
-    private AlertDialog.Builder popupBuilder;
-    private AlertDialog settings_popup;
     // vars
-    ConstraintLayout pin_layout;          // layout
-    private TextView pin_text;            // 'drop a pin' text
-    private ColorPickerView color_wheel;  // circular color picker
-    private Button confirm_button;        // confirm new data point
-    private double[] coords = {0, 0};     // last color coordinates (x, y)
-    private ImageView selector;           // emoji popup
+    ConstraintLayout pin_layout;                             // layout
+    private TextView pin_text;                               // 'drop a pin' text
+    private ColorPickerView color_wheel;                     // circular color picker
+    private Button confirm_button;                           // confirm new data point
+    private double[] coords = {0, 0};                        // last color coordinates (x, y)
+    private ImageView selector;                              // emoji popup selector
+    DatabaseManager db = new DatabaseManager(this); // local database
+    private AlertDialog.Builder popupBuilder;                // settings popup builder
+    private AlertDialog settings_popup;                      // settings popup
 
+    // debug flag
+    private boolean debug = false;
 
+    // methods
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,11 +44,11 @@ public class PinActivity extends AppCompatActivity {
 
         // find xml views
         pin_text       = findViewById(R.id.pin_heading);
-        selector          = findViewById(R.id.popup);
+        selector       = findViewById(R.id.popup);
         confirm_button = findViewById(R.id.confirm_button);
         color_wheel    = findViewById(R.id.color_wheel);
 
-        // debug text object
+        // add debug view
         final TextView data_debug = new TextView(this);
         pin_layout.addView(data_debug);
 
@@ -62,7 +65,6 @@ public class PinActivity extends AppCompatActivity {
                 pin_text.setTextColor(color_subscribe);
                 confirm_button.setTextColor(color_subscribe);
                 confirm_button.setVisibility(View.VISIBLE);
-
 
                 // update exposed coordinates
                 coords = rgb2xy(Integer.toHexString(color_subscribe));
@@ -83,7 +85,12 @@ public class PinActivity extends AppCompatActivity {
                 selector.setY((float)y);
 
                 // DEBUG
-                // data_debug.setText("Data Point : (" + coords[0] + "," + coords[1] + ","+ date+")");
+                if (debug) {
+                    data_debug.setText("Data Point : ("
+                                       + coords[0] + ","
+                                       + coords[1] + ","
+                                       + get_formatted_date() +")");
+                }
             }
         });
 
@@ -192,7 +199,7 @@ public class PinActivity extends AppCompatActivity {
         System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
 
         // TODO add entry to data base here
-        Pin pin = new Pin(0, coords[0],coords[1],date);
+        Pin pin = new Pin(0, coords[0], coords[1], date);
         db.insert(pin);
     }
 

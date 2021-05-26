@@ -6,7 +6,7 @@ public class Pin {
     private String date;
     private int id;
 
-    public Pin(int id,double x, double y, String date){
+    public Pin(int id, double x, double y, String date){
         this.id = id;
         this.x = x;
         this.y = y;
@@ -18,4 +18,8 @@ public class Pin {
     public double getY() { return this.y; }
 
     public String getDate() { return this.date; }
+
+    public String getTime() { return this.date.split(" ")[1]; }
+
+    public String getDay() { return this.date.split(" ")[0]; }
 }

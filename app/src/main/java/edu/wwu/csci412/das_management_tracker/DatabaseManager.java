@@ -6,7 +6,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 public class DatabaseManager extends SQLiteOpenHelper{
+
     /*DatabaseManager class contains fields and methods that control a database of donation centers */
+
     private static final String DATABASE_NAME = "Diary";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_DIARY = "entries";
@@ -18,8 +20,8 @@ public class DatabaseManager extends SQLiteOpenHelper{
     private static final String TABLE_PINS = "pins";
     private static final String IDPin = "idPin";
     private static final String DATEPIN = "date";
-    private static final double X = 0;
-    private static final double Y = 0;
+    private static final String X = "x";
+    private static final String Y = "y";
 
 
 
@@ -32,7 +34,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
     public void onCreate( SQLiteDatabase db ) {
     // build sql create statement
     //Fix create table query
-        String sqlCreate = "create table " + TABLE_DIARY + "( ";
+        String sqlCreate = "create table " + TABLE_DIARY + " ( ";
         sqlCreate +=  ID + " integer primary key autoincrement, ";
         sqlCreate +=  TITLE + " title, ";
         sqlCreate +=  TEXT + " text, ";
@@ -41,7 +43,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
 
         db.execSQL( sqlCreate );
 
-        String sqlCreatePin = "create table " + TABLE_PINS + "( ";
+        String sqlCreatePin = "create table " + TABLE_PINS + " ( ";
         sqlCreatePin +=  IDPin + " integer primary key autoincrement, ";
         sqlCreatePin +=  X + " double, ";
         sqlCreatePin +=  Y + " double, ";
@@ -54,8 +56,6 @@ public class DatabaseManager extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
-
-
 
     public void insert( DiaryEntry entry ) {
         SQLiteDatabase db = this.getWritableDatabase( );
@@ -71,7 +71,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
     }
     public void insert( Pin newPin ) {
         SQLiteDatabase db = this.getWritableDatabase( );
-        String sqlInsert = "insert into " + TABLE_DIARY;
+        String sqlInsert = "insert into " + TABLE_PINS;
         sqlInsert += " values( null, ' ";
         sqlInsert += newPin.getX( ) + "', ' ";
         sqlInsert += newPin.getY( ) + "', ' ";
@@ -80,7 +80,6 @@ public class DatabaseManager extends SQLiteOpenHelper{
         db.execSQL( sqlInsert );
         db.close( );
     }
-
 
     /*selectAll returns all the Charity items currently in our database */
     public ArrayList<DiaryEntry> selectAllEntries( ) {
