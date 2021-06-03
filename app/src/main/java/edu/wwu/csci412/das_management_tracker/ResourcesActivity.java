@@ -69,7 +69,27 @@ public class ResourcesActivity extends AppCompatActivity {
         buttons[2] = new ResourceButton(this);
         buttons[2].setLink("https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/anger-management/art-20045434");
         buttons[2].setText("Resource 3: Anger Management");
+        /*for(int k = 0; k < matchedCharities.size(); k++){
+            System.out.println("Button added to grid view");
+            CharityButton button = new CharityButton(this, matchedCharities.get(k));
+            button.setText((matchedCharities.get(k).getName() + " " + matchedCharities.get(k).getHours()) + " " + matchedCharities.get(k).getAddress());
+            button.setOnTouchListener(ba);
+            grid.addView( button);
+            String address1 = matchedCharities.get(k).getAddress();
+            //String[] address = location.split(" ");
+            //String address = join("+", list);
+            String address = address1.replace(" ","+");
+            String dest_lat = String.valueOf(matchedCharities.get(k).getLatitude());
+            String dest_long = String.valueOf(matchedCharities.get(k).getLongitude());
 
+            System.out.println(address);
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v){
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" + start_lat +","+ start_long + "&destination=" + dest_lat + "," + dest_long));
+                    startActivity(intent);
+                }
+            });
+        }*/
 
         for(int i = 0; i < 15; i++) {
             //delete once we have all resources
