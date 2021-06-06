@@ -6,22 +6,35 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
 
+import java.util.List;
+
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Bundle;
+
 
 public class ResourcesActivity extends AppCompatActivity {
     //randomly shows resources and activities
@@ -30,7 +43,6 @@ public class ResourcesActivity extends AppCompatActivity {
     private AlertDialog popup;
     private ScrollView scrollView;
     ResourceButton [] buttons = new ResourceButton[15];
-    private int index = 0;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,56 +69,79 @@ public class ResourcesActivity extends AppCompatActivity {
         super.onStart();
         update();
     }
+    protected void onRestart() {
+        super.onRestart();
+        update();
+    }
     private void createResources(){
-        buttons[0] = new ResourceButton(this);
-        buttons[0].setLink("https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-016-0111-x");
-        buttons[0].setText("Resource 1: Psychometric Properties");
-
-        buttons[1] = new ResourceButton(this);
-        buttons[1].setLink("https://www.youtube.com/watch?v=ZToicYcHIOU");
-        buttons[1].setText("Resource 2: Online Meditation");
-
-        buttons[2] = new ResourceButton(this);
-        buttons[2].setLink("https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/anger-management/art-20045434");
-        buttons[2].setText("Resource 3: Anger Management");
-        /*for(int k = 0; k < matchedCharities.size(); k++){
-            System.out.println("Button added to grid view");
-            CharityButton button = new CharityButton(this, matchedCharities.get(k));
-            button.setText((matchedCharities.get(k).getName() + " " + matchedCharities.get(k).getHours()) + " " + matchedCharities.get(k).getAddress());
-            button.setOnTouchListener(ba);
-            grid.addView( button);
-            String address1 = matchedCharities.get(k).getAddress();
-            //String[] address = location.split(" ");
-            //String address = join("+", list);
-            String address = address1.replace(" ","+");
-            String dest_lat = String.valueOf(matchedCharities.get(k).getLatitude());
-            String dest_long = String.valueOf(matchedCharities.get(k).getLongitude());
-
-            System.out.println(address);
-            button.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" + start_lat +","+ start_long + "&destination=" + dest_lat + "," + dest_long));
-                    startActivity(intent);
-                }
-            });
-        }*/
 
         for(int i = 0; i < 15; i++) {
             //delete once we have all resources
-            if(i > 2) {
-                buttons[i] = new ResourceButton(this);
+            buttons[i] = new ResourceButton(this);
+            /*int white = Color.parseColor("#ffffff");
+            int black = Color.parseColor("#000000");
+            buttons[i].setBackgroundColor(white);
+            buttons[i].setTextColor(black);*/
+            if(i > 3) {
+
                 String printIt = "Resource " + (i + 1);
                 buttons[i].setText(printIt);
                 buttons[i].setLink(" ");
             }
-            index = i;
-            buttons[i].setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buttons[index].getLink()));
-                    startActivity(intent);
-                }
-            });
         }
+
+        buttons[0].setLink("https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-016-0111-x");
+        buttons[0].setText("Curious about why tracking your mood on a scale results in valuable information?\n\n" +
+                "Check out this article on Psychometric properties of the Positive Mental Health Scale ");
+        buttons[0].setCategory("Happy");
+        buttons[0].setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buttons[0].getLink()));
+                startActivity(intent);
+            }
+        });
+
+        buttons[1].setLink("https://www.youtube.com/watch?v=ZToicYcHIOU");
+        buttons[1].setText("For a calming online meditation click here");
+        buttons[1].setCategory("Stress");
+        buttons[1].setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buttons[1].getLink()));
+                startActivity(intent);
+            }
+        });
+
+        buttons[2].setLink("https://www.mayoclinic.org/healthy-lifestyle/adult-health/in-depth/anger-management/art-20045434");
+        buttons[2].setText("Click here for steps to manage anger");
+        buttons[2].setCategory("Anger");
+        buttons[2].setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buttons[2].getLink()));
+                startActivity(intent);
+            }
+        });
+
+        //set up suicide help line to click and call
+        //category sad
+
+        //Find something to manage anxiety
+
+        //Find something for happy/excited
+
+        //Add DASS-21
+
+
+        buttons[3] = new ResourceButton(this);
+        buttons[3].setLink("https://www.psychologytoday.com/us/blog/unhappy-achievers/202106/unhappy-achievers-and-anger");
+        buttons[3].setText("Angry and unproductive? \n Click here to read about ways to manage stress surrounding performance");
+        buttons[3].setCategory("Anger");
+        buttons[3].setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(buttons[3].getLink()));
+                startActivity(intent);
+            }
+        });
+
     }
     //Need to add in actual resources
     //Like links or past diary entries etc.
@@ -119,19 +154,22 @@ public class ResourcesActivity extends AppCompatActivity {
         grid.setRowCount(15);
         grid.setColumnCount( 1 );
 
-        List<Integer> template = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14);
+        List<Integer> template = Arrays.asList(0,1,2,3,4);
         Collections.shuffle(template);
-
-        for(int i = 0; i < 15; i++) {
+        //TODO: select resources that match the user most recent pin and save to ArrayList
+        ArrayList<ResourceButton> chosen;
+        int i = 0;
+        while( i < 5) {
 
             System.out.println(i + " " + template.get(i));
             if(buttons[template.get(i)].getParent() == null) {
-                grid.addView(buttons[template.get(i)], GridLayout.LayoutParams.MATCH_PARENT, 300);
+                grid.addView(buttons[template.get(i)], GridLayout.LayoutParams.MATCH_PARENT, 800);
+                i++;
             }
         }
 
         scrollView.addView( grid );
-        //13 14 8 12 3 15 2 5 10 7 6 4 9 1 11
+
     }
 
 

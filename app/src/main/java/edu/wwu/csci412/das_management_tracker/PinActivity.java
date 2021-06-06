@@ -199,7 +199,7 @@ public class PinActivity extends AppCompatActivity {
         String date = get_formatted_date();
         System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
 
-        // TODO add entry to data base here
+
         Pin pin = new Pin(0, coords[0], coords[1], date);
         db.insert(pin);
 
