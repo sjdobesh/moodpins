@@ -1,4 +1,5 @@
 package edu.wwu.csci412.das_management_tracker;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,7 +23,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
     private static final String DATEPIN = "date";
     private static final String X = "x";
     private static final String Y = "y";
-
+    private static final String COLOR = "color";
 
 
 
@@ -47,7 +48,8 @@ public class DatabaseManager extends SQLiteOpenHelper{
         sqlCreatePin +=  IDPin + " integer primary key autoincrement, ";
         sqlCreatePin +=  X + " double, ";
         sqlCreatePin +=  Y + " double, ";
-        sqlCreatePin +=  DATEPIN + " text )";
+        sqlCreatePin +=  DATEPIN + " text, ";
+        sqlCreatePin += COLOR + " int )";
 
         db.execSQL( sqlCreatePin );
     }
@@ -75,7 +77,8 @@ public class DatabaseManager extends SQLiteOpenHelper{
         sqlInsert += " values( null, ' ";
         sqlInsert += newPin.getX( ) + "', ' ";
         sqlInsert += newPin.getY( ) + "', ' ";
-        sqlInsert += newPin.getDate( ) + "' )";
+        sqlInsert += newPin.getDate( ) + "', ' ";
+        sqlInsert += newPin.getColor( ) + "' )";
 
         db.execSQL( sqlInsert );
         db.close( );
@@ -99,7 +102,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         return entries;
     }
     public ArrayList<Pin> selectAllPins( ) {
-        String sqlQuery = "select * from " + TABLE_PINS;
+        String sqlQuery = "select * from " + TABLE_PINS + " order by " + X;
 
         SQLiteDatabase db = this.getWritableDatabase( );
         Cursor cursor = db.rawQuery( sqlQuery, null );
@@ -108,7 +111,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         while( cursor.moveToNext( ) ) {
             Pin currentPin
                     = new Pin(cursor.getInt( 0 ), cursor.getDouble( 1 ),
-                    cursor.getDouble( 2 ),cursor.getString( 3 ));
+                    cursor.getDouble( 2 ),cursor.getString( 3 ), cursor.getInt(4));
             pins.add(currentPin);
         }
         db.close( );

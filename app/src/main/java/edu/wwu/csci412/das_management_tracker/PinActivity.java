@@ -31,6 +31,8 @@ public class PinActivity extends AppCompatActivity {
     private AlertDialog.Builder popupBuilder;                // settings popup builder
     private AlertDialog settings_popup;                      // settings popup
 
+    private int pin_color;
+
     // debug flag
     private boolean debug = false;
 
@@ -65,6 +67,8 @@ public class PinActivity extends AppCompatActivity {
                 pin_text.setTextColor(color_subscribe);
                 confirm_button.setTextColor(color_subscribe);
                 confirm_button.setVisibility(View.VISIBLE);
+
+                pin_color = color_subscribe;
 
                 // update exposed coordinates
                 coords = rgb2xy(Integer.toHexString(color_subscribe));
@@ -199,7 +203,7 @@ public class PinActivity extends AppCompatActivity {
         System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
 
         // TODO add entry to data base here
-        Pin pin = new Pin(0, coords[0], coords[1], date);
+        Pin pin = new Pin(0, coords[0], coords[1], date, pin_color);
         db.insert(pin);
     }
 
