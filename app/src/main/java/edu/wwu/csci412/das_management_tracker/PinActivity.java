@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import top.defaults.colorpicker.ColorObserver;
 import top.defaults.colorpicker.ColorPickerView;
@@ -202,9 +203,15 @@ public class PinActivity extends AppCompatActivity {
         String date = get_formatted_date();
         System.out.println("Adding data point: "+coords[0]+","+coords[1]+","+date);
 
-        // TODO add entry to data base here
+
         Pin pin = new Pin(0, coords[0], coords[1], date, pin_color);
         db.insert(pin);
+
+        //check that database is working
+        /*ArrayList<Pin> pins = db.selectAllPins();
+        for(Pin aPin: pins){
+            System.out.println(aPin.getX()+" "+ aPin.getY());
+        }*/
     }
 
     public static double[] rgb2xy(String RGBHex) {
