@@ -1,25 +1,15 @@
 package edu.wwu.csci412.das_management_tracker;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -36,6 +26,9 @@ import com.jjoe64.graphview.series.OnDataPointTapListener;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 import com.jjoe64.graphview.series.Series;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class AnalysisActivity extends AppCompatActivity {
 
     ConstraintLayout analysisLayout;
@@ -43,6 +36,10 @@ public class AnalysisActivity extends AppCompatActivity {
 //    Spinner dropdown;
     EditText dayRange;
     Toolbar toolbar;
+
+    ArrayList<Pin> allPins;
+    DatabaseManager db = new DatabaseManager(this);
+    PointsGraphSeries<DataPoint> redPoints, bluePoints, greenPoints, cyanPoints, whitePoints;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -60,6 +57,30 @@ public class AnalysisActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Analysis");
         toolbar.setTitleTextAppearance(this, R.style.MontserratText);
+
+        allPins = db.selectAllPins();
+
+        pointGraph.getViewport().setXAxisBoundsManual(true);
+        pointGraph.getViewport().setYAxisBoundsManual(true);
+        pointGraph.getViewport().setMinX(-100);
+        pointGraph.getViewport().setMaxX(100);
+        pointGraph.getViewport().setMinY(-100);
+        pointGraph.getViewport().setMaxY(100);
+
+        for(int i = 0; i < allPins.size(); i++) {
+            Pin currPin = allPins.get(i);
+            DataPoint dp = new DataPoint(currPin.getX(), currPin.getY() * -1);
+            DataPoint[] point = {dp};
+            PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(point);
+            pointGraph.addSeries(series);
+            series.setColor(currPin.getColor());
+        }
+
+
+        pointGraph.setTitle("Pin Distribution");
+        pointGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        pointGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        pointGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.BOTH);
 
 
         analysisLayout.setOnTouchListener(new OnSwipeTouchListener(AnalysisActivity.this) {
@@ -178,23 +199,6 @@ public class AnalysisActivity extends AppCompatActivity {
 //        graph.setTitleTextSize();
 //        graph.setTitleColor();
 
-        PointsGraphSeries<DataPoint> points = new PointsGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 3),
-                new DataPoint(1, 2),
-                new DataPoint(1, 4),
-                new DataPoint(2, 1),
-                new DataPoint(2, 4.5),
-                new DataPoint(3, 2),
-                new DataPoint(3, 4),
-                new DataPoint(4, 3),
-        });
-        pointGraph.addSeries(points);
-        points.setShape(PointsGraphSeries.Shape.POINT);
-
-        pointGraph.setTitle("Pin Distribution");
-        pointGraph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-        pointGraph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        pointGraph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
 
     }
 
@@ -209,16 +213,87 @@ public class AnalysisActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId())
         {
+            case R.id.mood_item:
+                Toast.makeText(this, "Mood", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.valence_item:
+                Toast.makeText(this, "Valence", Toast.LENGTH_SHORT).show();
+                return true;
             case R.id.frequency_item:
                 Toast.makeText(this, "Frequency", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.daily_item:
-                Toast.makeText(this, "Daily", Toast.LENGTH_SHORT).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(menuItem);
         }
 
     }
+
+//    public DataPoint[] increaseLength(DataPoint[] old, DataPoint dp) {
+//        DataPoint[] newArr = new DataPoint[old.length + 1];
+//        for(int i = 0; i < old.length; i++) {
+//            newArr[i] = old[i];
+//        }
+//        newArr[old.length] = dp;
+//
+//        return newArr;
+//    }
+
+    //        DataPoint[] redPins = new DataPoint[0];
+//        DataPoint[] bluePins = new DataPoint[0];
+//        DataPoint[] greenPins = new DataPoint[0];
+//        DataPoint[] cyanPins = new DataPoint[0];
+//        DataPoint[] whitePins = new DataPoint[0];
+//
+//        for(int i = 0; i < allPins.size(); i++) {
+//            Pin currPin = allPins.get(i);
+//            DataPoint dp = new DataPoint(currPin.getX(), currPin.getY() * -1);
+//            if((dp.getX() > 15 && dp.getY() >= 0) || (dp.getX() >= 0 && dp.getY() > 15)) {
+//                greenPins = increaseLength(greenPins, dp);
+//                Log.d("Color test", "GREEN");
+//            }
+//            else if((dp.getX() > 15 && dp.getY() < 0) || (dp.getX() > 0 && dp.getY() < -15)) {
+//                cyanPins = increaseLength(cyanPins, dp);
+//                Log.d("Color test", "CYAN");
+//            }
+//            else if((dp.getX() < -15 && dp.getY() >= 0) || (dp.getX() < -1 && dp.getY() > 15)) {
+//                redPins = increaseLength(redPins, dp);
+//                Log.d("Color test", "RED");
+//            }
+//            else if((dp.getX() < -15 && dp.getY() < 0) || (dp.getX() <= 1 && dp.getY() < -15)) {
+//                bluePins = increaseLength(bluePins, dp);
+//                Log.d("Color test", "BLUE");
+//            }
+//            else {
+//                whitePins = increaseLength(whitePins, dp);
+//                Log.d("Color test", "WHITE");
+//            }
+////            redPins[i] = new DataPoint(currPin.getX(), currPin.getY() * -1);
+//        }
+//
+//        if(redPins.length > 0) {
+//            redPoints = new PointsGraphSeries<>(redPins);
+//            pointGraph.addSeries(redPoints);
+//            redPoints.setColor(Color.RED);
+//        }
+//        if(bluePins.length > 0) {
+//            bluePoints = new PointsGraphSeries<>(bluePins);
+//            pointGraph.addSeries(bluePoints);
+//            bluePoints.setColor(Color.BLUE);
+//        }
+//        if(greenPins.length > 0) {
+//            greenPoints = new PointsGraphSeries<>(greenPins);
+//            pointGraph.addSeries(greenPoints);
+//            greenPoints.setColor(Color.GREEN);
+//        }
+//        if(cyanPins.length > 0) {
+//            cyanPoints = new PointsGraphSeries<>(cyanPins);
+//            pointGraph.addSeries(cyanPoints);
+//            cyanPoints.setColor(Color.CYAN);
+//        }
+//        if(whitePins.length > 0) {
+//            whitePoints = new PointsGraphSeries<>(whitePins);
+//            pointGraph.addSeries(whitePoints);
+//            whitePoints.setColor(Color.WHITE);
+//        }
 
 }

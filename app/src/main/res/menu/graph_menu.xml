@@ -11,13 +11,18 @@
         <menu>
 
             <item
-                android:title="Frequency"
-                android:id="@+id/frequency_item"
+                android:title="Mood"
+                android:id="@+id/mood_item"
                 app:showAsAction="never">
             </item>
             <item
-                android:title="Daily"
-                android:id="@+id/daily_item"
+                android:title="Valence"
+                android:id="@+id/valence_item"
+                app:showAsAction="never">
+            </item>
+            <item
+                android:title="Frequency"
+                android:id="@+id/frequency_item"
                 app:showAsAction="never">
             </item>
         </menu>
