@@ -5,17 +5,15 @@ public class DiaryEntry {
     private String title;
     private String text;
     private String date;
-    private String time;
 
     DiaryEntry(){
 
     }
-    DiaryEntry(int ID, String title, String text, String date, String time){
+    DiaryEntry(int ID, String title, String text, String date){
         this.ID = ID;
         this.title = title;
         this.text = text;
         this.date = date;
-        this.time = time;
     }
 
     public int getID() {
@@ -50,13 +48,6 @@ public class DiaryEntry {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 
 
 }

@@ -39,8 +39,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         sqlCreate +=  ID + " integer primary key autoincrement, ";
         sqlCreate +=  TITLE + " title, ";
         sqlCreate +=  TEXT + " text, ";
-        sqlCreate +=  DATE + " text, ";
-        sqlCreate +=  TIME + " text )";
+        sqlCreate +=  DATE + " text )";
 
         db.execSQL( sqlCreate );
 
@@ -65,8 +64,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         sqlInsert += " values( null, ' ";
         sqlInsert += entry.getTitle( ) + "', ' ";
         sqlInsert += entry.getText( ) + "', ' ";
-        sqlInsert += entry.getDate( ) + "', ' ";
-        sqlInsert += entry.getTime( ) + "' )";
+        sqlInsert += entry.getDate( ) + "' )";
 
         db.execSQL( sqlInsert );
         db.close( );
@@ -95,7 +93,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         while( cursor.moveToNext( ) ) {
             DiaryEntry currentDiary
                 = new DiaryEntry(cursor.getInt( 0 ), cursor.getString( 1 ),
-                cursor.getString( 2 ),cursor.getString( 3 ),cursor.getString( 4 ));
+                cursor.getString( 2 ),cursor.getString( 3 ));
             entries.add(currentDiary);
         }
         db.close( );
@@ -117,6 +115,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         db.close( );
         return pins;
     }
+
 
 }
 

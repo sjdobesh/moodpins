@@ -29,9 +29,6 @@ public class AddEntry extends AppCompatActivity {
     Toolbar toolbar;
     EditText title;
     EditText entry;
-    Calendar cal;
-    String Date;
-    String Time;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -41,10 +38,11 @@ public class AddEntry extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("New Entry");
+        getSupportActionBar().setTitle("Reflections");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         title = findViewById(R.id.diaryTitle);
         entry = findViewById(R.id.entry);
+
 
         title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -65,11 +63,6 @@ public class AddEntry extends AppCompatActivity {
             }
         });
 
-        cal = Calendar.getInstance();
-        Date = cal.get(Calendar.YEAR)+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.DAY_OF_MONTH);
-        Time = pad(cal.get(Calendar.HOUR))+":"+pad(cal.get(Calendar.MINUTE));
-
-        Log.d("calendar", "dateandtime: "+ Date+" "+Time);
 
 
     }
@@ -86,11 +79,22 @@ public class AddEntry extends AppCompatActivity {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.delete){
-            Toast.makeText(this, "save btn is clicked", Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.save){
+            String date = get_formatted_date();
+            DiaryEntry dEntry = new DiaryEntry(0,title.getText().toString(),entry.getText().toString(),date);
+            db.insert(dEntry);
+            Toast.makeText(this, "Entry Saved", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // get current date and time with pre specified format
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String get_formatted_date() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        return dtf.format(LocalDateTime.now());
     }
 }
