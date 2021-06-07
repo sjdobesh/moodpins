@@ -15,6 +15,14 @@ public class Pin {
         this.color = color;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public double getX() { return this.x; }
 
     public double getY() { return this.y; }

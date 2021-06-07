@@ -93,7 +93,7 @@ public class DatabaseManager extends SQLiteOpenHelper{
         while( cursor.moveToNext( ) ) {
             DiaryEntry currentDiary
                 = new DiaryEntry(cursor.getInt( 0 ), cursor.getString( 1 ),
-                cursor.getString( 2 ),cursor.getString( 3 ));
+                cursor.getString( 2 ),cursor.getString( 3 ),cursor.getString( 4 ));
             entries.add(currentDiary);
         }
         db.close( );
@@ -116,6 +116,22 @@ public class DatabaseManager extends SQLiteOpenHelper{
         return pins;
     }
 
+    public ArrayList<Pin> selectAllPinsByTime() {
+        String sqlQuery = "select * from " + TABLE_PINS + " order by " + IDPin;
+
+        SQLiteDatabase db = this.getWritableDatabase( );
+        Cursor cursor = db.rawQuery( sqlQuery, null );
+
+        ArrayList<Pin> pins = new ArrayList<>( );
+        while( cursor.moveToNext( ) ) {
+            Pin currentPin
+                    = new Pin(cursor.getInt( 0 ), cursor.getDouble( 1 ),
+                    cursor.getDouble( 2 ),cursor.getString( 3 ), cursor.getInt(4));
+            pins.add(currentPin);
+        }
+        db.close( );
+        return pins;
+    }
 
 }
 
